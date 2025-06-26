@@ -30,18 +30,23 @@
       attribution: '&copy; OpenStreetMap'
     }).addTo(map);
 
+    // START
     const startMarker = L.marker([52.230, 21.010]).addTo(map);
     startMarker.bindPopup('<div class="marker-label">START</div>').openPopup();
 
+    // META
     const metaMarker = L.marker([52.237, 21.020]).addTo(map);
     metaMarker.bindPopup('<div class="marker-label">META</div>');
 
+    // PKC
     const pkcMarker = L.marker([52.233, 21.013]).addTo(map);
     pkcMarker.bindPopup('<div class="marker-label">PKC</div>');
 
+    // SOS
     const sosMarker = L.marker([52.235, 21.017]).addTo(map);
     sosMarker.bindPopup('<div class="marker-label">SOS</div>');
 
+    // Trasa OS (linia START -> PKC -> META)
     const routeCoords = [
       [52.230, 21.010],
       [52.233, 21.013],
