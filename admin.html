@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel admina</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input { margin: 5px; }
+    table { margin-top: 10px; border-collapse: collapse; }
+    td, th { border: 1px solid #ccc; padding: 5px; }
+  </style>
+</head>
+<body>
+  <h2>Panel administracyjny</h2>
+  <div>
+    Nazwa: <input id="label"><br>
+    Lat: <input id="lat"> Lng: <input id="lng">
+    <button onclick="addPoint()">Dodaj punkt</button>
+  </div>
+  <table id="pointTable"></table>
+
+  <script src="data.js"></script>
+  <script>
+    if (localStorage.getItem("auth") !== "ok") {
+      window.location.href = "login.html";
+    }
+
+    function renderTable() {
+      const table = document.getElementById('pointTable');
+      table.innerHTML = "<tr><th>Nazwa</th><th>Lat</th><th>Lng</th><th></th></tr>";
+      points.forEach((p, i) => {
+        table.innerHTML += `<tr><td>${p.label}</td><td>${p.lat}</td><td>${p.lng}</td><td><button onclick="del(${i})">Usuń</button></td></tr>`;
+      });
+    }
+
+    function addPoint() {
+      const label = document.getElementById('label').value;
+      const lat = parseFloat(document.getElementById('lat').value);
+      const lng = parseFloat(document.getElementById('lng').value);
+      if (!label || isNaN(lat) || isNaN(lng)) return alert("Błąd danych");
+      points.push({ label, lat, lng });
+      renderTable();
+      saveData();
+    }
+
+    function del(i) {
+      points.splice(i, 1);
+      renderTable();
+      saveData();
+    }
+
+    function saveData() {
+      const blob = new Blob([`const points = ${JSON.stringify(points, null, 2)};`], { type: "text/javascript" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "data.js";
+      a.click();
+    }
+
+    renderTable();
+  </script>
+</body>
+</html>
