@@ -3,34 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RallyMap - Mikołajki Arena</title>
+  <title>RallyMap</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; }
+    #map { height: 100vh; width: 100vw; }
+    .marker-label {
+      background: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      border: 1px solid black;
+    }
+    .logout {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      padding: 6px 12px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
+  <button class="logout" onclick="logout()">Wyloguj</button>
   <div id="map"></div>
+
+  <script>
+    if (!sessionStorage.getItem("loggedIn")) {
+      window.location.href = "admin.html";
+    }
+
+    function logout() {
+      sessionStorage.removeItem("loggedIn");
+      window.location.href = "admin.html";
+    }
+  </script>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    const map = L.map('map').setView([53.801, 21.577], 16);
+    const map = L.map('map').setView([52.2297, 21.0122], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; OpenStreetMap'
     }).addTo(map);
 
-    const startMarker = L.marker([53.79955, 21.57233]).addTo(map);
+    const startMarker = L.marker([52.230, 21.010]).addTo(map);
     startMarker.bindPopup('<div class="marker-label">START</div>').openPopup();
 
-    const pkcMarker = L.marker([53.80280, 21.57830]).addTo(map);
-    pkcMarker.bindPopup('<div class="marker-label">PKC / SOS</div>');
-
-    const metaMarker = L.marker([53.80425, 21.58390]).addTo(map);
+    const metaMarker = L.marker([52.237, 21.020]).addTo(map);
     metaMarker.bindPopup('<div class="marker-label">META</div>');
 
+    const pkcMarker = L.marker([52.233, 21.013]).addTo(map);
+    pkcMarker.bindPopup('<div class="marker-label">PKC</div>');
+
+    const sosMarker = L.marker([52.235, 21.017]).addTo(map);
+    sosMarker.bindPopup('<div class="marker-label">SOS</div>');
+
     const routeCoords = [
-      [53.79955, 21.57233],
-      [53.80280, 21.57830],
-      [53.80425, 21.58390]
+      [52.230, 21.010],
+      [52.233, 21.013],
+      [52.237, 21.020]
     ];
     L.polyline(routeCoords, { color: 'red', weight: 4 }).addTo(map);
   </script>
